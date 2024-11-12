@@ -9,13 +9,17 @@ admin.site.register(Area,AreaAdmin)
 
 
 from .models import Store
+from django.utils.safestring import mark_safe
 class StoreAdmin(admin.ModelAdmin):
     list_display = [
         'store_id',
         'store_name',
         'address',
-        'price'
+        'price',
+        'image',
    ]
+    def image(self, obj):
+     return mark_safe('<img src="{}" style="width:100px height:auto;">'.format(obj.photo.url))
 admin.site.register(Store,StoreAdmin)
 
 
@@ -28,3 +32,4 @@ class AreaStoreAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(AreaStore,AreaStoreAdmin)
+

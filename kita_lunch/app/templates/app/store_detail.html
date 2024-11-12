@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+   タイトル
+{% endblock %}
+
+{% block content %}
+
+    <h1>エリア一覧</h1>
+        <thead>
+            <tr>
+                <th>エリア名</th>
+             </tr>
+        </thead>
+    {% for area in object_list %}
+        <tr>
+            <td>
+                <a href="{% url 'area_detail' area.area_id %}" ="button" class="btn btn-primary">{{area.area_name}}</a>
+            </td>
+        </tr>
+    {% endfor %}
+
+{% endblock %}

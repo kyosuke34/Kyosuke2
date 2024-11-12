@@ -1,32 +1,45 @@
 {% extends "base.html" %}
+
 {% block title %}
    タイトル
- {% endblock %}
-   
-   
-   
-{% block content %}
-    
-   <h1>店舗一覧</h1>
-   <table border="1">
-       <thead>
-           <tr>
-               <th>店舗名</th>
-               <th>住所</th>
-               <th>価格</th>
-               <th>地図</th>
-           </tr>
-       </thead>
-       {% for Store in object_list %}
-       <tr>
-           <td>{{ Store.store_name }}</td>
-           <td>{{ Store.address }}</td>
-           <td>{{ Store.price }} 円</td>
-           <td> <iframe src="https://www.google.com/maps/embed/v1/place?q={{ Store.store_name }}&key=AIzaSyA5KE6CMVwnPELIUmcN6776I6R2pUcRPLU&zoom=15"></iframe><td>
-        </tr>
-       {% endfor %}
-   </table>
-       
+{% endblock %}
 
- {% endblock %}
+{% block content %}
+
+   <h1>{{ area.area_name }}の店舗一覧</h1>
+   
+   <div class="row row-cols-1 row-cols-md-4 g-4">
+       {% for Store in object_list %}
+       <div class="col">
+           <div class="card" style="width: 18rem;">
+               <!-- 店舗の画像を表示するimgタグ -->
+               <img src="{{ Store.image_url }}" class="card-img-top" alt="{{ Store.store_name }}">
+
+               <div class="card-body">
+                   <h5 class="card-title">{{ Store.store_name }}</h5>
+                   <p class="card-text">{{ Store.address }}</p>
+                   <p class="card-text">{{ Store.price }} 円</p>
+
+                   <!-- Google Maps 埋め込み -->
+                   <div class="map-container" style="height: 200px;">
+                       <iframe 
+                           src="https://www.google.com/maps/embed/v1/place?q={{ Store.store_name }}&key=AIzaSyA5KE6CMVwnPELIUmcN6776I6R2pUcRPLU&zoom=15" 
+                           width="100%" 
+                           height="100%" 
+                           style="border:0;" 
+                           allowfullscreen="" 
+                           loading="lazy">
+                       </iframe>
+                   </div>
+
+                   <!-- カード下部のボタン -->
+                   <a href="{% url 'store_detail' area.area_id %}" class="btn btn-primary mt-2">詳細を見る</a>
+               </div>
+           </div>
+       </div>
+       {% endfor %}
+   </div>
+
+{% endblock %}
+
 
