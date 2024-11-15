@@ -1,26 +1,24 @@
 {% extends "base.html" %}
 
 {% block title %}
-   タイトル
+    {{ store.store_name }}
 {% endblock %}
 
 {% block content %}
+    <h1>
+        <a href="/area/{{ area.area_id }}/">
+            {{ area.area_name }} 店舗一覧
+        </a>
+        <span> > {{ store.store_name }}</span>
+    </h1>
 
-    <h1>エリア一覧</h1>
-        <thead>
-            <tr>
-                <th>エリア名</th>
-             </tr>
-        </thead>
-    {% for area in object_list %}
-        <tr>
-            <td>
-                
-                <a href="/store/{{ area.area_id }}/{{store.store_id }}/">
-                    {{ store.store_name }}
-                </a>
-            </td>
-        </tr>
-    {% endfor %}
-
+    <h1>{{ store.store_name }}</h1>
+    <p>{{ store.address }}</p>
+    <p>{{ store.price }} 円</p>
+    <div class="mb-4">
+        {% for store_tag in store_tags %}
+            <span class="badge bg-primary">{{ store_tag.tag.tag_name }}</span>
+        {% endfor %}
+    </div>
+    <iframe src="https://www.google.com/maps/embed/v1/place?q={{ store.store_name }}&key=AIzaSyA5KE6CMVwnPELIUmcN6776I6R2pUcRPLU&zoom=15"></iframe>
 {% endblock %}
