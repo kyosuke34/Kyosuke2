@@ -33,7 +33,9 @@
                    </div>
 
                    <!-- カード下部のボタン -->
-                   <a href="{% url 'store_detail' area.area_id %}" class="btn btn-primary mt-2">詳細を見る</a>
+                   <a href="/store/{{ area.area_id }}/{{store.store_id }}/">
+                     {{ store.store_name }}" class="btn btn-primary mt-2">詳細を見る
+                   </a>
                </div>
            </div>
        </div>

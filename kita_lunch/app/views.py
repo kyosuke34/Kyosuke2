@@ -54,8 +54,19 @@ WHERE "Area_Store"."area_id" = area_id
     area = Area.objects.get(area_id=area_id)
     context = {"object_list": stores,"area":area}
 
-
     return render(request, "app/store_list.html", context)
+
+def store_detail(request, area_id, store_id):
+
+    area = Area.objects.get(area_id=area_id)			
+    store = Store.objects.get(store_id=store_id)
+    store_tags = StoreTag.objects.filter(store_id=store_id).all()
+    context = {"area": area, "store": store, "store_tags": store_tags}
+    for store_tag in store_tags:
+        print(store_tag.tag.tag_name)
+
+    return render(request, "app/store_detail.html", context)
+
 
 # クラスベースのビュー			
 class AreaStoreListView(ListView):

@@ -21,4 +21,5 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.TopView.as_view(), name="top")
+    path('store/<int:area_id>/<int:store_id>/', views.store_detail, name='store_detail'),
 ]
