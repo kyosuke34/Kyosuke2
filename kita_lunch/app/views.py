@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from .models import Area, Store
+from .models import Area, Store, Tag,StoreTag
 from django.views.generic import DetailView
 
 # import logging
@@ -52,7 +52,36 @@ WHERE "Area_Store"."area_id" = area_id
 """
 
     area = Area.objects.get(area_id=area_id)
-    context = {"object_list": stores,"area":area}
+    tags = Tag.objects.all()
+
+    selected_tags_id = request.POST.getlist("tag_id")
+    print("selected_tags_id=", selected_tags_id)
+
+    # if selected_tags_id:
+    #     stores = Store.objects.filter(
+    #         areastore__area_id=area_id,
+    #         storetag__tag_id__in=selected_tags_id).distinct()
+    
+    target_stores = []
+    for store in stores:
+        print("store_id:", store.store_id)
+        store_tag_count = StoreTag.objects.filter(
+            store_id=store.store_id,
+            tag_id__in=selected_tags_id).count()
+        print("store_tag_count=", store_tag_count)
+
+        if store_tag_count == len(selected_tags_id):
+            target_stores.append(store)
+            
+    # print("stores=", stores)
+
+
+    context = {
+        "object_list": target_stores, 
+        "area": area, 
+        "tags": tags, 
+        "selected_tags_id": selected_tags_id}
+
 
     return render(request, "app/store_list.html", context)
 
@@ -71,23 +100,72 @@ def store_detail(request, area_id, store_id):
 
     return render(request, "app/store_detail.html", context)
 
-
-
 # クラスベースのビュー			
 class AreaStoreListView(ListView):
     model = Store	
     template_name = "store_list.html"			
     context_object_name = "stores"			
 			
-def get_queryset(self):			
-    area_id = self.kwargs["area_id"]
-    # logger.info("area_id=", area_id)	
-    stores = Store.objects.filter(
-        areastore__area_id = area_id)			
-    print(stores)
-    return stores
+    def get_queryset(self):			
+        area_id = self.kwargs["area_id"]
+        # logger.info("area_id=", area_id)	
+        stores = Store.objects.filter(
+            areastore__area_id = area_id)			
+        print(stores)
+        return stores
 
-def get_context_data(self, **kwargs):			
-    context = super().get_context_data(**kwargs)			
-    context["area"] = Area.objects.get(area_id=self.kwargs["area_id"])			
-    return context
+    def get_context_data(self, **kwargs):			
+        context = super().get_context_data(**kwargs)			
+        context["area"] = Area.objects.get(area_id=self.kwargs["area_id"])			
+        return context
+
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import AuthenticationForm
+class LoginView(LoginView):
+    form_class = AuthenticationForm
+    template_name = "login.html"
+
+class LogoutView(LoginRequiredMixin, LogoutView):
+    template_name = "top.html"
+
+
+#     context = {"object_list": stores,"area":area}
+
+#     return render(request, "app/store_list.html", context)
+
+# def store_detail(request, area_id, store_id):
+
+#     area = Area.objects.get(area_id=area_id)			
+#     store = Store.objects.get(store_id=store_id)
+#     store_tags = StoreTag.objects.filter(store_id=store_id).all()
+#     for store_tag in store_tags:
+#         print(store_tag.tag.tag_name)
+
+#     context = {"area": area, "store": store, "store_tags": store_tags}
+#     # context = {"area": area, "store": store}
+
+#     print("store:", store)
+
+#     return render(request, "app/store_detail.html", context)
+
+
+
+# # クラスベースのビュー			
+# class AreaStoreListView(ListView):
+#     model = Store	
+#     template_name = "store_list.html"			
+#     context_object_name = "stores"			
+			
+# def get_queryset(self):			
+#     area_id = self.kwargs["area_id"]
+#     # logger.info("area_id=", area_id)	
+#     stores = Store.objects.filter(
+#         areastore__area_id = area_id)			
+#     print(stores)
+#     return stores
+
+# def get_context_data(self, **kwargs):			
+#     context = super().get_context_data(**kwargs)			
+#     context["area"] = Area.objects.get(area_id=self.kwargs["area_id"])			
+#     return context
