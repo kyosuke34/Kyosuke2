@@ -1,47 +1,53 @@
 {% extends "base.html" %}
-
 {% block title %}
    タイトル
-{% endblock %}
-
-{% block content %}
-
-   <h1>{{ area.area_name }}の店舗一覧</h1>
+ {% endblock %}
    
-   <div class="row row-cols-1 row-cols-md-4 g-4">
-       {% for Store in object_list %}
-       <div class="col">
-           <div class="card" style="width: 18rem;">
-               <!-- 店舗の画像を表示するimgタグ -->
-               <img src="{{ Store.image_url }}" class="card-img-top" alt="{{ Store.store_name }}">
-
-               <div class="card-body">
-                   <h5 class="card-title">{{ Store.store_name }}</h5>
-                   <p class="card-text">{{ Store.address }}</p>
-                   <p class="card-text">{{ Store.price }} 円</p>
-
-                   <!-- Google Maps 埋め込み -->
-                   <div class="map-container" style="height: 200px;">
-                       <iframe 
-                           src="https://www.google.com/maps/embed/v1/place?q={{ Store.store_name }}&key=AIzaSyA5KE6CMVwnPELIUmcN6776I6R2pUcRPLU&zoom=15" 
-                           width="100%" 
-                           height="100%" 
-                           style="border:0;" 
-                           allowfullscreen="" 
-                           loading="lazy">
-                       </iframe>
-                   </div>
-
-                   <!-- カード下部のボタン -->
-                   <a class="btn btn-primary" href="/store/{{ area.area_id }}/{{ Store.store_id }}/">
-                    詳細を見る
-                   </a>
-               </div>
-           </div>
-       </div>
+   
+   
+{% block content %}
+    
+   <h1>{{ area.area_name }} 店舗一覧</h1>
+    <div class="mb-4">
+        <form method="POST" action="{% url 'area_store_list' area.area_id %}">
+            {% csrf_token %}
+            {% for tag in tags %}
+            <label>
+                <input 
+                    type="checkbox" 
+                    name="tag_id" 
+                    value="{{ tag.tag_id }}"
+                    {% if tag.tag_id|stringformat:"s" in selected_tags_id %}checked{% endif %}
+                >{{ tag.tag_name }} 
+            </label>
+           {% endfor %}
+            <input class="btn btn-primary btn-sm" type="submit" value="絞り込み検索">
+            </form>        
+    </div>
+   <table border="1">
+       <thead>
+           <tr>
+               <th>店舗名</th>
+               <th>住所</th>
+               <th>価格</th>
+               <th>地図</th>
+           </tr>
+       </thead>
+       {% for store in object_list %}
+       <tr>
+           <td>
+            <a href="/store/{{ area.area_id }}/{{store.store_id }}/">
+            {{ store.store_name }}
+            </a>
+            </td>
+           <td>{{ store.address }}</td>
+           <td>{{ store.price }} 円</td>
+           <td> <iframe src="https://www.google.com/maps/embed/v1/place?q={{ store.store_name }}&key=AIzaSyA5KE6CMVwnPELIUmcN6776I6R2pUcRPLU&zoom=15"></iframe><td>
+        </tr>
        {% endfor %}
-   </div>
+   </table>
+       
 
-{% endblock %}
+ {% endblock %}
 
 

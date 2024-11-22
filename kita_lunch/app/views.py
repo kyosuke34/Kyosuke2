@@ -65,7 +65,7 @@ def store_detail(request, area_id, store_id):
         print(store_tag.tag.tag_name)
 
     context = {"area": area, "store": store, "store_tags": store_tags}
-    context = {"area": area, "store": store}
+    # context = {"area": area, "store": store}
 
     print("store:", store)
 
