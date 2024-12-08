@@ -11,19 +11,6 @@
     <div id="carouselExampleIndicators" class="carousel slide">
 
 
-    <h1>エリア一覧</h1>
-         <thead>
-             <tr>
-                 <th>エリア名</th>
-             </tr>
-         </thead>
-         {% for area in object_list %}
-         <tr>
-            <td>
-                <a href="{% url 'area_detail' area.area_id %}" ="button" class="btn btn-primary">{{area.area_name}}</a>
-            </td>
-         </tr>
-         {% endfor %}
          <div id="carouselExample" class="carousel slide">
             <div class="carousel-inner">
               <div class="carousel-item active">
@@ -45,6 +32,28 @@
               <span class="visually-hidden">Next</span>
             </button>
           </div>
+
+          <div class="m-3">					
+            <div>エリア一覧</div>					
+              {% for area in object_list %}					
+                <span>					
+                 <a href="{% url 'area_detail' area.area_id %}" class="btn btn-outline-primary">{{area.area_name}}</a>					
+                </span>					
+              {% endfor %}					
+          </div>					
+          <!-- <h1>エリア一覧</h1>
+          <thead>
+              <tr>
+                  <th>エリア名</th>
+              </tr>
+          </thead>
+          {% for area in object_list %}
+          <tr>
+             <td>
+                 <a href="{% url 'area_detail' area.area_id %}" ="button" class="btn btn-primary">{{area.area_name}}</a>
+             </td>
+          </tr>
+          {% endfor %} -->
  {% endblock %}
     
  

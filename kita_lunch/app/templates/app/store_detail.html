@@ -5,20 +5,90 @@
 {% endblock %}
 
 {% block content %}
-    <h1>
+<div class="container mt-5"> 
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="/">トップ</a></li>
+         <li class="breadcrumb-item"><a href="/area/{{ area.area_id }}/">{{ area.area_name }}の店舗一覧</a></li>
+         <li class="breadcrumb-item active" aria-current="page">{{ store.store_name }}の詳細</li>
+        </ol>
+    </nav>
+    <!-- <h1>
         <a href="/area/{{ area.area_id }}/">
             {{ area.area_name }} 店舗一覧
         </a>
         <span> > {{ store.store_name }}</span>
-    </h1>
-
-    <h1>{{ store.store_name }}</h1>
-    <p>{{ store.address }}</p>
-    <p>{{ store.price }} 円</p>
+    </h1> -->
+<div class="card mb-4">
+    <div class="card-body">
+    <h1 class="card-title">{{ store.store_name }}</h1>
     <div class="mb-4">
         {% for store_tag in store_tags %}
             <span class="badge bg-primary">{{ store_tag.tag.tag_name }}</span>
         {% endfor %}
     </div>
+    <div class="row  border-bottom mb-3">
+        <div class="col-1" >
+            <strong>住所</strong>
+        </div>
+            <!-- <p class="card-text pb-2 mb-2 border-bottom"><strong>住所:</strong> {{ store.address }}</p> -->
+        <div class="col">
+            {{ store.address }}  
+        </div>
+    </div>
+
+<div class="row  border-bottom mb-3">
+    <div class="col-1">
+        <strong>営業時間</strong>
+    </div>
+        <!-- <p class="card-text pb-2 mb-2 border-bottom"><strong>住所:</strong> {{ store.address }}</p> -->
+    <div class="col">
+        {{ store.business_hours }}  
+    </div>
+</div>
+
+<div class="row  border-bottom mb-3">
+    <div class="col-1">
+        <strong>メニュー</strong>
+    </div>
+        <!-- <p class="card-text pb-2 mb-2 border-bottom"><strong>住所:</strong> {{ store.address }}</p> -->
+    <div class="col">
+        {{ store.menu }}  
+    </div>
+</div>
+
+<div class="row  border-bottom mb-3">
+    <div class="col-1">
+        <strong>価格</strong>
+    </div>
+        <!-- <p class="card-text pb-2 mb-2 border-bottom"><strong>住所:</strong> {{ store.address }}</p> -->
+    <div class="col">
+        {{ store.price }}  
+    </div>
+</div>
+
+<div class="row  border-bottom mb-3">
+    <div class="col-1">
+        <strong>支払方法</strong>
+    </div>
+        <!-- <p class="card-text pb-2 mb-2 border-bottom"><strong>住所:</strong> {{ store.address }}</p> -->
+    <div class="col">
+        {{ store.payment_methods }}  
+    </div>
+</div>
+    <!-- <p class="card-text pb-2 mb-2 border-bottom"><strong>営業時間:</strong> {{ store.business_hours }} </p>
+    
+    <p class="card-text pb-2 mb-2 border-bottom"><strong>メニュー:</strong> {{ store.menu }} </p>
+    
+    <p class="card-text pb-2 mb-2 border-bottom"><strong>価格:</strong> {{ store.price }} 円</p>
+    
+    <p class="card-text pb-2 mb-2 border-bottom"><strong>支払方法:</strong> {{ store.payment_methods }} </p>
+     -->
+    <!-- <p>住所：{{ store.address }}</p>
+    <p>金額：{{ store.price }} 円</p> -->
+    
     <iframe src="https://www.google.com/maps/embed/v1/place?q={{ store.store_name }}&key=AIzaSyA5KE6CMVwnPELIUmcN6776I6R2pUcRPLU&zoom=15"></iframe>
+    </div>
+</div>
+</div>
 {% endblock %}
